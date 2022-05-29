@@ -10,16 +10,39 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import blaze98.slalom.map.MapUtils
+import blaze98.slalom.monster.MonsterFabric
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.LatLng
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var locationManager: LocationManager
+    private lateinit var mMap: GoogleMap
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
 
+        setContentView(R.layout.activity_maps)
+        val mapFragment = supportFragmentManager
+            .findFragmentById(R.id.map) as SupportMapFragment
+        mapFragment.getMapAsync(this)
         setupLocalization()
+    }
+
+    override fun onMapReady(googleMap: GoogleMap) {
+        mMap = googleMap
+        mMap.isMyLocationEnabled = true
+        val lastLocation = locationManager.getLastKnownLocation(locationManager.getBestProvider(Criteria(), true).toString())
+        val monsters = MonsterFabric.getNMonstersLocations(10, lastLocation!!)
+        val mapUtils = MapUtils(mMap)
+        mapUtils.placeMarkers(monsters)
+
+        val userLatLng = LatLng(lastLocation!!.latitude, lastLocation!!.longitude)
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(userLatLng))
 
     }
 
