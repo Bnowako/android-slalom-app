@@ -21,6 +21,7 @@ class Game(
     private var allMonsters: MutableList<Polygon> = mutableListOf()
     private var monstersAwake: Boolean = true
     val mainHandler = Handler(Looper.getMainLooper())
+    private lateinit var finishArea: Polygon
 
 
     fun init(location: Location, context: Context) {
@@ -30,6 +31,7 @@ class Game(
         allMonsters.addAll(polygons)
 
         val userLatLng = LatLng(location.latitude, location.longitude)
+        finishArea = mapUtils.placeFinishArea(userLatLng)
         mMap.moveCamera(CameraUpdateFactory.newLatLng(userLatLng))
         mainHandler.post(object : Runnable {
             override fun run() {
@@ -39,7 +41,6 @@ class Game(
                 mainHandler.postDelayed(this, 7000)
             }
         })
-
     }
 
     fun isUserAlive(currLocation: Location): Boolean {
