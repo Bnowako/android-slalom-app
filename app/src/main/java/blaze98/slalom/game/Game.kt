@@ -34,9 +34,9 @@ class Game(
         mainHandler.post(object : Runnable {
             override fun run() {
                 monstersAwake = !monstersAwake
-                val style = if (monstersAwake) R.raw.light_map else R.raw.dark_map
+                val style = if (monstersAwake) R.raw.dark_map else R.raw.light_map
                 mapUtils.changeMapStyle(style)
-                mainHandler.postDelayed(this, 3000)
+                mainHandler.postDelayed(this, 7000)
             }
         })
 
