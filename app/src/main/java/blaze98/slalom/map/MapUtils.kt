@@ -1,10 +1,8 @@
 package blaze98.slalom.map
 
+import android.graphics.Color
 import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
-import com.google.android.gms.maps.model.Polygon
-import com.google.android.gms.maps.model.PolygonOptions
+import com.google.android.gms.maps.model.*
 
 class MapUtils(
     private val map: GoogleMap, private val latOffset: Double = 0.001, private val lonOffset: Double = 0.0014
@@ -22,6 +20,9 @@ class MapUtils(
                     LatLng(latLng.latitude - latOffset, latLng.longitude - lonOffset),
                     LatLng(latLng.latitude + latOffset, latLng.longitude - lonOffset)
                 )
+                .strokeColor(Color.parseColor("#fc0303"))
+                .strokeWidth(2f)
+                .fillColor(Color.argb(20,50,0,255))
         )
     }
 
