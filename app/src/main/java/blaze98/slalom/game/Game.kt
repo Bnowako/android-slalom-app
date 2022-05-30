@@ -53,8 +53,14 @@ class Game(
         lastLocation = currLocation
         val latLng = LatLng(lastLocation.latitude, lastLocation.longitude)
 
-        if(checkIfUserWon(latLng)) return GameStatus.USER_WON
-        if (monstersAwake && !isUserAlive(latLng)) return GameStatus.USER_DEAD
+        if(checkIfUserWon(latLng)) {
+            userWon()
+            return GameStatus.USER_WON
+        }
+        if (monstersAwake && !isUserAlive(latLng)) {
+            userDead()
+            return GameStatus.USER_DEAD
+        }
         return GameStatus.USER_ALIVE
     }
 
@@ -78,5 +84,15 @@ class Game(
         val monsterLocation = getMonsterLocation(currLocation)
         val monsterPolygon = mapUtils.placeRectangle(monsterLocation)
         allMonsters.add(monsterPolygon)
+    }
+
+    private fun userDead() {
+        mainHandler.removeCallbacksAndMessages(null)
+    }
+
+    private fun userWon() {
+        mainHandler.removeCallbacksAndMessages(null)
+        mapUtils.removePolygons(allMonsters)
+        allMonsters = mutableListOf()
     }
 }
