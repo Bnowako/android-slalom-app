@@ -47,6 +47,16 @@ class MapUtils(
         )
     }
 
+    fun removePolygons(polygons: MutableList<Polygon>) {
+        polygons.forEach() {
+            removePolygon(it)
+        }
+    }
+
+    private fun removePolygon(polygon: Polygon) {
+        polygon.remove()
+    }
+
     fun placePolygons(locations: MutableList<LatLng>): List<Polygon> {
         return locations.map {
             placeRectangle(it)
