@@ -30,7 +30,7 @@ class MapUtils(
         )
     }
 
-    private fun placeRectangle(latLng: LatLng): Polygon {
+    fun placeRectangle(latLng: LatLng): Polygon {
         return map.addPolygon(
             PolygonOptions()
                 .clickable(true)
