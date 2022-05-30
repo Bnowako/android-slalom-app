@@ -1,5 +1,6 @@
 package blaze98.slalom.game
 
+import android.content.Context
 import android.location.Location
 import blaze98.slalom.map.MapUtils
 import blaze98.slalom.monster.MonsterFabric
@@ -15,9 +16,10 @@ class Game(
     private lateinit var mapUtils: MapUtils
     private var allMonsters: MutableList<Polygon> = mutableListOf()
 
-    fun init(location: Location) {
+
+    fun init(location: Location, context: Context) {
         val monsters = MonsterFabric.getNMonstersLocations(10, location)
-        mapUtils = MapUtils(mMap)
+        mapUtils = MapUtils(mMap, context)
         val polygons = mapUtils.placePolygons(monsters)
         allMonsters.addAll(polygons)
 

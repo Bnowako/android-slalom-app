@@ -1,11 +1,12 @@
 package blaze98.slalom.map
 
+import android.content.Context
 import android.graphics.Color
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.*
 
 class MapUtils(
-    private val map: GoogleMap, private val latOffset: Double = 0.001, private val lonOffset: Double = 0.0014
+    private val map: GoogleMap, private val context: Context, private val latOffset: Double = 0.001, private val lonOffset: Double = 0.0014
 ) {
 
 
@@ -44,6 +45,10 @@ class MapUtils(
                 .position(location)
                 .title("Monster :o")
         )
+    }
+
+    fun changeMapStyle(style: Int) {
+        map.setMapStyle(MapStyleOptions.loadRawResourceStyle(context, style))
     }
 
 }

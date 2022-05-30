@@ -42,8 +42,10 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         mMap = googleMap
         mMap.isMyLocationEnabled = true
         game = Game(mMap)
-        val lastLocation = locationManager.getLastKnownLocation(locationManager.getBestProvider(Criteria(), true).toString())
-        game.init(lastLocation!!)
+        val lastLocation = locationManager.getLastKnownLocation(
+            locationManager.getBestProvider(Criteria(), true).toString()
+        )
+        game.init(lastLocation!!, this)
         initialized = true
     }
 
