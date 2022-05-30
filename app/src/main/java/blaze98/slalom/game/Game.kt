@@ -40,7 +40,7 @@ class Game(
         mainHandler.post(object : Runnable {
             override fun run() {
                 iteration += 1
-                if(iteration % 2 == 0) addMonster(lastLocation)
+                if (iteration % 2 == 0) addMonster(lastLocation)
                 monstersAwake = !monstersAwake
                 val style = if (monstersAwake) R.raw.dark_map else R.raw.light_map
                 mapUtils.changeMapStyle(style)
@@ -49,20 +49,29 @@ class Game(
         })
     }
 
-    fun isUserAlive(currLocation: Location): Boolean {
+    fun validateGame(currLocation: Location): GameStatus {
         lastLocation = currLocation
-        if(monstersAwake) {
-            var userAlive = true
-            val latLng = LatLng(currLocation.latitude, currLocation.longitude)
-            allMonsters.forEach {
-                if (PolyUtil.containsLocation(latLng, it.points, true)) {
-                    userAlive = false
-                    return@forEach
-                }
+        val latLng = LatLng(lastLocation.latitude, lastLocation.longitude)
+
+        if(checkIfUserWon(latLng)) return GameStatus.USER_WON
+        if (monstersAwake && !isUserAlive(latLng)) return GameStatus.USER_DEAD
+        return GameStatus.USER_ALIVE
+    }
+
+    private fun checkIfUserWon(latLng: LatLng): Boolean {
+        if(PolyUtil.containsLocation(latLng, finishArea.points, true)) return true
+        return false
+    }
+
+    private fun isUserAlive(latLng: LatLng): Boolean {
+        var userAlive = true
+        allMonsters.forEach {
+            if (PolyUtil.containsLocation(latLng, it.points, true)) {
+                userAlive = false
+                return@forEach
             }
-            return userAlive
         }
-        return true
+        return userAlive
     }
 
     fun addMonster(currLocation: Location) {

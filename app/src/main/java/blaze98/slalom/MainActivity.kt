@@ -70,7 +70,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         //todo change to check if game is initialized
         if(initialized) {
             println("IS USER ALIVE?")
-            println(game.isUserAlive(it))
+            println(game.validateGame(it))
             println("----")
         }
     }
