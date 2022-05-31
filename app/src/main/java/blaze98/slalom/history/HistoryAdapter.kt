@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import blaze98.slalom.R
+import blaze98.slalom.game.GameStatus
 import kotlinx.android.synthetic.main.history_item.view.*
 
 class HistoryAdapter(private val history: MutableList<History>):RecyclerView.Adapter<HistoryAdapter.HistoryViewHolder>() {
@@ -25,7 +26,7 @@ class HistoryAdapter(private val history: MutableList<History>):RecyclerView.Ada
         val curTodo = history[position]
         holder.itemView.apply {
             tvHistoryName.text = curTodo.name
-            tvStatus.text = curTodo.status.toString()
+            tvStatus.text = if (curTodo.status == GameStatus.USER_WON) "Won :)" else "Lost :("
             }
         }
 
