@@ -14,6 +14,7 @@ import blaze98.slalom.game.Game
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import kotlinx.android.synthetic.main.activity_map_game.*
 
 class MapGame : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var locationManager: LocationManager
@@ -27,8 +28,7 @@ class MapGame : AppCompatActivity(), OnMapReadyCallback {
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
-
-
+        btnBack.setOnClickListener { this.finish() }
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
