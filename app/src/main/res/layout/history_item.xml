@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="80dp"
-    android:paddingStart="8dp"
+    android:paddingStart="15dp"
     android:paddingEnd="8dp"
     >
 
@@ -24,6 +24,7 @@
         android:layout_height="wrap_content"
         android:text="TextView"
         android:textSize="23sp"
+        android:paddingStart="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/tvHistoryName"
         app:layout_constraintTop_toTopOf="parent" />
