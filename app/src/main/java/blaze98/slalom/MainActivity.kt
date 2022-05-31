@@ -23,9 +23,6 @@ class MainActivity : AppCompatActivity() {
             showToastWithText("Game is starting..")
             startActivity(intent)
         }
-        btnDeleteDb.setOnClickListener {
-            this.deleteDatabase("map-game-db")
-        }
     }
 
     private fun createRvView() {
