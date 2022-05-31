@@ -1,10 +1,12 @@
 package blaze98.slalom.game
 
 import android.content.Context
+import android.database.sqlite.SQLiteDatabase
 import android.location.Location
 import android.os.Handler
 import android.os.Looper
 import blaze98.slalom.R
+import blaze98.slalom.data.DatabaseHelper
 import blaze98.slalom.map.MapUtils
 import blaze98.slalom.monster.MonsterFabric
 import blaze98.slalom.monster.MonsterFabric.Companion.getMonsterLocation
@@ -22,12 +24,14 @@ class Game(
     private var allMonsters: MutableList<Polygon> = mutableListOf()
     private var monstersAwake: Boolean = true
     private var iteration: Int = 0
+    private lateinit var writeableDb: SQLiteDatabase
     private lateinit var lastLocation: Location
     val mainHandler = Handler(Looper.getMainLooper())
     private lateinit var finishArea: Polygon
 
 
     fun init(location: Location, context: Context) {
+        writeableDb = DatabaseHelper(context).writableDatabase
         lastLocation = location
         val monsters = MonsterFabric.getNMonstersLocations(10, location)
         mapUtils = MapUtils(mMap, context)
@@ -55,10 +59,12 @@ class Game(
 
         if(checkIfUserWon(latLng)) {
             userWon()
+            DatabaseHelper.insertHistoryRecord(writeableDb, "Blaze", GameStatus.USER_WON)
             return GameStatus.USER_WON
         }
         if (monstersAwake && !isUserAlive(latLng)) {
             userDead()
+            DatabaseHelper.insertHistoryRecord(writeableDb, "Blaze", GameStatus.USER_DEAD)
             return GameStatus.USER_DEAD
         }
         return GameStatus.USER_ALIVE
