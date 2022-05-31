@@ -28,9 +28,11 @@ class Game(
     private lateinit var lastLocation: Location
     val mainHandler = Handler(Looper.getMainLooper())
     private lateinit var finishArea: Polygon
+    private var gameOn = false
 
 
     fun init(location: Location, context: Context) {
+        gameOn = true
         writeableDb = DatabaseHelper(context).writableDatabase
         lastLocation = location
         val monsters = MonsterFabric.getNMonstersLocations(10, location)
@@ -54,6 +56,7 @@ class Game(
     }
 
     fun validateGame(currLocation: Location): GameStatus {
+        if(!gameOn) return GameStatus.GAME_OFF
         lastLocation = currLocation
         val latLng = LatLng(lastLocation.latitude, lastLocation.longitude)
 
@@ -93,10 +96,12 @@ class Game(
     }
 
     private fun userDead() {
+        gameOn = false
         mainHandler.removeCallbacksAndMessages(null)
     }
 
     private fun userWon() {
+        gameOn = false
         mainHandler.removeCallbacksAndMessages(null)
         mapUtils.removePolygons(allMonsters)
         allMonsters = mutableListOf()
