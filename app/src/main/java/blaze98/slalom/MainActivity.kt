@@ -17,21 +17,24 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        val dbHelper = DatabaseHelper(this)
-        val readable = dbHelper.readableDatabase
-        val history = DatabaseHelper.getAllHistory(readable)
-
+        createRvView()
         btnStartGame.setOnClickListener {
             val intent = Intent(this, MapGame::class.java)
             showToastWithText("Game is starting..")
             startActivity(intent)
         }
+        btnDeleteDb.setOnClickListener {
+            this.deleteDatabase("map-game-db")
+        }
+    }
 
-
+    private fun createRvView() {
+        val dbHelper = DatabaseHelper(this)
+        val readable = dbHelper.readableDatabase
+        val history = DatabaseHelper.getAllHistory(readable)
         historyAdapter = HistoryAdapter(history)
         rvHistory.adapter = historyAdapter
         rvHistory.layoutManager = LinearLayoutManager(this)
-
     }
 
 
@@ -39,6 +42,12 @@ class MainActivity : AppCompatActivity() {
         val duration = Toast.LENGTH_SHORT
         val toast = Toast.makeText(applicationContext, text, duration)
         toast.show()
+    }
+
+
+    override fun onStart() {
+        super.onStart()
+        createRvView()
     }
 
 }
