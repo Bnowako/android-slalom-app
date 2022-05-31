@@ -6,11 +6,13 @@ import android.content.pm.PackageManager
 import android.location.Criteria
 import android.location.LocationListener
 import android.location.LocationManager
+import android.media.MediaPlayer
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import blaze98.slalom.game.Game
+import blaze98.slalom.game.GameStatus
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
@@ -69,7 +71,12 @@ class MapGame : AppCompatActivity(), OnMapReadyCallback {
         //todo change to check if game is initialized
         if(initialized) {
             println("IS USER ALIVE?")
-            println(game.validateGame(it))
+            val gameStatus = game.validateGame(it)
+            if(gameStatus == GameStatus.USER_WON) {
+                var mediaPlayer = MediaPlayer.create(this, R.raw.won)
+                mediaPlayer.start()
+            }
+            println(gameStatus)
             println("----")
         }
     }
