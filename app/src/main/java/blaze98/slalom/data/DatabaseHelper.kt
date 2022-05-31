@@ -5,6 +5,7 @@ import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import blaze98.slalom.game.GameStatus
+import blaze98.slalom.history.History
 
 class DatabaseHelper(val context: Context): SQLiteOpenHelper(context,  "map-game-db",null, 1) {
 
@@ -14,6 +15,24 @@ class DatabaseHelper(val context: Context): SQLiteOpenHelper(context,  "map-game
             initialValue.put("name", name)
             initialValue.put("status", status.toString())
             db.insert("HISTORY", null,initialValue)
+        }
+
+        fun getAllHistory(redeable: SQLiteDatabase): MutableList<History> {
+            val cursor = redeable.query(
+                "HISTORY", arrayOf("NAME", "STATUS"),
+                null,
+                null,
+                null,
+                null,
+                null
+            )
+            val history = mutableListOf<History>()
+            if (cursor.moveToFirst()) {
+                do {
+                    history.add(History(cursor.getString(0), GameStatus.valueOf(cursor.getString(1))))
+                } while (cursor.moveToNext())
+            }
+            return history
         }
     }
 
