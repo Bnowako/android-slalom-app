@@ -3,8 +3,10 @@ package blaze98.slalom.game
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.location.Location
+import android.os.Build
 import android.os.Handler
 import android.os.Looper
+import androidx.annotation.RequiresApi
 import blaze98.slalom.R
 import blaze98.slalom.data.DatabaseHelper
 import blaze98.slalom.map.MapUtils
@@ -15,6 +17,7 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Polygon
 import com.google.maps.android.PolyUtil
+import java.time.LocalDateTime
 
 
 class Game(
@@ -57,6 +60,7 @@ class Game(
         })
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     fun validateGame(currLocation: Location): GameStatus {
         if(!gameOn) return GameStatus.GAME_OFF
         lastLocation = currLocation
@@ -64,12 +68,12 @@ class Game(
 
         if(checkIfUserWon(latLng)) {
             userWon()
-            DatabaseHelper.insertHistoryRecord(writeableDb, "Blaze", GameStatus.USER_WON)
+            DatabaseHelper.insertHistoryRecord(writeableDb, "Blaze", GameStatus.USER_WON, LocalDateTime.now())
             return GameStatus.USER_WON
         }
         if (monstersAwake && !isUserAlive(latLng)) {
             userDead()
-            DatabaseHelper.insertHistoryRecord(writeableDb, "Blaze", GameStatus.USER_DEAD)
+            DatabaseHelper.insertHistoryRecord(writeableDb, "Blaze", GameStatus.USER_DEAD, LocalDateTime.now())
             return GameStatus.USER_DEAD
         }
         return GameStatus.USER_ALIVE
