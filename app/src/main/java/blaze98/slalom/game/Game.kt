@@ -46,11 +46,13 @@ class Game(
         mainHandler.post(object : Runnable {
             override fun run() {
                 iteration += 1
-                if (iteration % 2 == 0) addMonster(lastLocation)
                 monstersAwake = !monstersAwake
+                if (!monstersAwake) {
+                    addMonster(lastLocation)
+                }
                 val style = if (monstersAwake) R.raw.dark_map else R.raw.light_map
                 mapUtils.changeMapStyle(style)
-                mainHandler.postDelayed(this, 5000)
+                mainHandler.postDelayed(this, 10000)
             }
         })
     }
@@ -104,6 +106,8 @@ class Game(
         gameOn = false
         mainHandler.removeCallbacksAndMessages(null)
         mapUtils.removePolygons(allMonsters)
+        val style = R.raw.light_map
+        mapUtils.changeMapStyle(style)
         allMonsters = mutableListOf()
     }
 }
