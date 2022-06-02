@@ -14,8 +14,8 @@ class MonsterFabric {
             return LatLng(lat, lon)
         }
 
-        fun getMonsterLocation(userLocation: Location): LatLng {
-            val bounds = getBoundsForLocation(userLocation)
+        fun getMonsterLocation(userLocation: Location, latOffset: Double, lonOffset: Double): LatLng {
+            val bounds = getBoundsForLocation(userLocation, latOffset, lonOffset)
             val lat = Random.nextDouble(bounds.minLat, bounds.maxLat)
             val lon = Random.nextDouble(bounds.minLon, bounds.maxLon)
             return LatLng(lat, lon)
@@ -23,17 +23,21 @@ class MonsterFabric {
 
         fun getNMonstersLocations(n: Int,userLocation: Location): MutableList<LatLng> {
             val monstersLocations = mutableListOf<LatLng>()
-            val bounds = getBoundsForLocation(userLocation)
+            val bounds = getBoundsForLocation(userLocation, 0.01, 0.013)
             for(i in 0..n){
                 monstersLocations.add(getMonsterLocation(bounds))
             }
             return monstersLocations
         }
 
-        private fun getBoundsForLocation(userLocation: Location): Bounds {
+        private fun getBoundsForLocation(
+            userLocation: Location,
+            latOffset: Double,
+            lonOffset: Double
+        ): Bounds {
             val lat = userLocation!!.latitude
             val lon = userLocation!!.longitude
-            val bounds = Bounds(lat - 0.01, lat + 0.01, lon - 0.013, lon + 0.013)
+            val bounds = Bounds(lat - latOffset, lat + latOffset, lon - lonOffset, lon + lonOffset)
             return bounds
         }
     }

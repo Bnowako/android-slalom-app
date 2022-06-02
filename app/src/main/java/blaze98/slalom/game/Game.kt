@@ -96,7 +96,7 @@ class Game(
     }
 
     fun addMonster(currLocation: Location) {
-        val monsterLocation = getMonsterLocation(currLocation)
+        val monsterLocation = getMonsterLocation(currLocation, 0.007, 0.009)
         val monsterPolygon = mapUtils.placeRectangle(monsterLocation)
         allMonsters.add(monsterPolygon)
     }
