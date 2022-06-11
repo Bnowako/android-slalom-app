@@ -12,6 +12,7 @@ import blaze98.slalom.data.DatabaseHelper
 import blaze98.slalom.map.MapUtils
 import blaze98.slalom.monster.MonsterFabric
 import blaze98.slalom.monster.MonsterFabric.Companion.getMonsterLocation
+import blaze98.slalom.monster.MonsterFabric.Companion.getNMonstersLocations
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.LatLng
@@ -51,7 +52,7 @@ class Game(
                 iteration += 1
                 monstersAwake = !monstersAwake
                 if (!monstersAwake) {
-                    addMonster(lastLocation)
+                    addMonsters(4, location)
                 }
                 val style = if (monstersAwake) R.raw.dark_map else R.raw.light_map
                 mapUtils.changeMapStyle(style)
@@ -101,9 +102,17 @@ class Game(
         allMonsters.add(monsterPolygon)
     }
 
+    fun addMonsters(n: Int, currLocation: Location) {
+        val monstersLocations = getNMonstersLocations(n ,currLocation, 0.007, 0.009)
+        val monstersPolygons = mapUtils.placePolygons(monstersLocations)
+        allMonsters.addAll(monstersPolygons)
+    }
+
     private fun userDead() {
         gameOn = false
         mainHandler.removeCallbacksAndMessages(null)
+        val style = R.raw.lost_map
+        mapUtils.changeMapStyle(style)
     }
 
     private fun userWon() {

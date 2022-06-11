@@ -7,8 +7,10 @@ import android.location.Criteria
 import android.location.LocationListener
 import android.location.LocationManager
 import android.media.MediaPlayer
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import blaze98.slalom.game.Game
@@ -67,6 +69,7 @@ class MapGame : AppCompatActivity(), OnMapReadyCallback {
                 Manifest.permission.ACCESS_COARSE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun prepareLocationListener() = LocationListener {
         //todo change to check if game is initialized
         if(initialized) {
